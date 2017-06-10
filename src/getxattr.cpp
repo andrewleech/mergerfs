@@ -185,6 +185,8 @@ _getxattr_controlfile(const Config &config,
         _getxattr_controlfile_srcmounts(config,attrvalue);
       else if(attr[2] == "minfreespace")
         _getxattr_controlfile_uint64_t(config.minfreespace,attrvalue);
+      else if(attr[2] == "maxsize")
+        _getxattr_controlfile_uint64_t(config.maxsize,attrvalue);
       else if(attr[2] == "moveonenospc")
         _getxattr_controlfile_bool(config.moveonenospc,attrvalue);
       else if(attr[2] == "dropcacheonclose")
