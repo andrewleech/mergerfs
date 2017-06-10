@@ -96,7 +96,8 @@ _statfs_core(const char                *srcmount,
 static
 int
 _statfs(const vector<string> &srcmounts,
-        struct statvfs       &fsstat)
+        struct statvfs       &fsstat,
+        uint64_t             maxsize)
 {
   map<dev_t,struct statvfs> fsstats;
   unsigned long min_bsize   = ULONG_MAX;
@@ -122,6 +123,16 @@ _statfs(const vector<string> &srcmounts,
         }
     }
 
+    if (maxsize && (fsstat.f_frsize * fsstat.f_blocks > maxsize))
+      {
+        unsigned long reduce = fsstat.f_blocks - (maxsize / fsstat.f_frsize);
+        if (fsstat.f_bavail > reduce) 
+          fsstat.f_bavail -= reduce;
+        else
+          fsstat.f_bavail = 0;        
+        fsstat.f_blocks -= reduce;
+      }
+
   return 0;
 }
 
@@ -139,7 +150,7 @@ namespace mergerfs
       const rwlock::ReadGuard  readlock(&config.srcmountslock);
 
       return _statfs(config.srcmounts,
-                     *stat);
+                     *stat, config.maxsize);
     }
   }
 }

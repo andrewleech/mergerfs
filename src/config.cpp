@@ -38,6 +38,7 @@ namespace mergerfs
       srcmounts(),
       srcmountslock(),
       minfreespace(MINFREESPACE_DEFAULT),
+      maxsize(0),
       moveonenospc(false),
       direct_io(false),
       dropcacheonclose(false),

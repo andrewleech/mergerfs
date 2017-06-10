@@ -46,6 +46,7 @@ namespace mergerfs
     std::vector<std::string> srcmounts;
     mutable pthread_rwlock_t srcmountslock;
     uint64_t                 minfreespace;
+    uint64_t                 maxsize;
     bool                     moveonenospc;
     bool                     direct_io;
     bool                     dropcacheonclose;
